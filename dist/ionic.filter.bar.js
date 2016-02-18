@@ -7,7 +7,8 @@ angular.module('jett.ionic.filter.bar', ['ionic']);
       '$timeout',
       '$ionicGesture',
       '$ionicPlatform',
-      function ($timeout, $ionicGesture, $ionicPlatform) {
+      '$rootScope',
+      function ($timeout, $ionicGesture, $ionicPlatform, $rootScope) {
         var filterBarTemplate;
 
         //create platform specific filterBar template using filterConfig items
@@ -131,6 +132,15 @@ angular.module('jett.ionic.filter.bar', ['ionic']);
             var filterItems = function () {
               $scope.filterItems($scope.data.filterText);
             };
+
+            // Manually filter items (from a previous state)
+            $rootScope.filterItemsForBar = function(searchTerm) {
+              // Set the text
+              $scope.data.filterText = searchTerm;
+
+              // Filter the items
+              $scope.filterItems(searchTerm);
+            }
 
             // Clean up when scope is destroyed
             $scope.$on('$destroy', function() {
